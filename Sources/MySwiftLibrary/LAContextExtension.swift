@@ -4,10 +4,8 @@
 //  Created by William J. C. Nesbitt.
 //
 
-#if !os(watchOS)
 import LocalAuthentication.LAContext
 
-@available(tvOS 10, *)
 public extension LAContext {
     func canEvaluatePolicy(_ policy: LAPolicy) -> Result<Any, Error> {
         var error: NSError?
@@ -29,4 +27,3 @@ public extension LAContext {
         }
     }
 }
-#endif

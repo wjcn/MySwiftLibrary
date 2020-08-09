@@ -6,10 +6,8 @@
 
 import SwiftUI
 
-@available(    iOS 13,    *)
-@available(  macOS 10.15, *)
-@available(   tvOS 13,    *)
-@available(watchOS  6,    *)
+@available(  iOS 13,    *)
+@available(macOS 10.15, *)
 public extension Color {
     init(_ colorSpace: RGBColorSpace = .sRGB, r: Int, g: Int, b: Int, o: Int = 255) {
         let red     = Double(r) / 255
