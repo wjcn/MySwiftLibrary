@@ -8,16 +8,20 @@ import Foundation.NSArray
 
 public extension Array {
     @inlinable var notEmpty: Bool { !isEmpty }
-}
 
-public extension Array where Element: Sequence {
-    @inlinable static func + (leftSide: [Element], rightSide: Element) -> [Element] {
+    @inlinable static func + (leftSide: Self, rightSide: Element) -> Self {
         var result = leftSide
         result.append(rightSide)
         return result
     }
 
-    @inlinable static func += (leftSide: inout [Element], rightSide: Element) {
+    @inlinable static func + (leftSide: Element, rightSide: Self) -> Self {
+        var result = Self(arrayLiteral: leftSide)
+        result.append(contentsOf: rightSide)
+        return result
+    }
+
+    @inlinable static func += (leftSide: inout Self, rightSide: Element) {
         leftSide.append(rightSide)
     }
 }
