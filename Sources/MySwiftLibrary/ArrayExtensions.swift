@@ -6,8 +6,18 @@
 
 import Foundation.NSArray
 
+public extension Array where Element: StringProtocol {
+    @available(    iOS 13,    *)
+    @available(  macOS 10.15, *)
+    @available(   tvOS 13,    *)
+    @available(watchOS  6,    *)
+    func localizedJoined() -> String {
+        ListFormatter.localizedString(byJoining: self.map { String($0) })
+    }
+}
+
 public extension Array {
-    @inlinable var notEmpty: Bool { !isEmpty }
+    var notEmpty: Bool { !isEmpty }
 
     // How to split an array into chunks.
     // https://www.hackingwithswift.com/example-code/language/how-to-split-an-array-into-chunks
@@ -19,19 +29,19 @@ public extension Array {
         }
     }
 
-    @inlinable static func + (leftSide: Self, rightSide: Element) -> Self {
+    static func + (leftSide: Self, rightSide: Element) -> Self {
         var result = leftSide
         result.append(rightSide)
         return result
     }
 
-    @inlinable static func + (leftSide: Element, rightSide: Self) -> Self {
+    static func + (leftSide: Element, rightSide: Self) -> Self {
         var result = Self(arrayLiteral: leftSide)
         result.append(contentsOf: rightSide)
         return result
     }
 
-    @inlinable static func += (leftSide: inout Self, rightSide: Element) {
+    static func += (leftSide: inout Self, rightSide: Element) {
         leftSide.append(rightSide)
     }
 }

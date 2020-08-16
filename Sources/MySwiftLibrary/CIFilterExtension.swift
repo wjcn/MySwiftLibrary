@@ -8,6 +8,6 @@
 import CoreImage.CIFilter
 
 public extension CIFilter {
-    @inlinable var localisedName: String { Self.localizedName(forFilterName: name)! }
+    var localisedName: String { Self.localizedName(forFilterName: name)! }
 }
 #endif

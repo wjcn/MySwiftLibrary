@@ -7,5 +7,5 @@
 import Foundation.NSSet
 
 public extension Set {
-    @inlinable var notEmpty: Bool { !isEmpty }
+    var notEmpty: Bool { !isEmpty }
 }

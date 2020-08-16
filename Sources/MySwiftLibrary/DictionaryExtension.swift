@@ -7,5 +7,5 @@
 import Foundation.NSDictionary
 
 public extension Dictionary {
-    @inlinable var notEmpty: Bool { !isEmpty }
+    var notEmpty: Bool { !isEmpty }
 }
