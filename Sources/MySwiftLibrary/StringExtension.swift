@@ -32,4 +32,8 @@ public extension String {
         }
         return result
     }
+
+    mutating func trimCharacters(in characterSet: CharacterSet) {
+        self = self.trimmingCharacters(in: characterSet)
+    }
 }
