@@ -7,10 +7,7 @@
 import Foundation.NSArray
 
 public extension Array where Element: StringProtocol {
-    @available(    iOS 13,    *)
-    @available(  macOS 10.15, *)
-    @available(   tvOS 13,    *)
-    @available(watchOS  6,    *)
+    @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
     func localizedJoined() -> String {
         ListFormatter.localizedString(byJoining: self.map { String($0) })
     }
