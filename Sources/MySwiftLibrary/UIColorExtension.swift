@@ -4,7 +4,7 @@
 //  Created by William J. C. Nesbitt.
 //
 
-#if os(iOS)
+#if !os(macOS)
 import UIKit.UIColor
 
 public extension UIColor {
@@ -13,9 +13,7 @@ public extension UIColor {
         let green = CGFloat(g) / 255
         let blue  = CGFloat(b) / 255
         let alpha = CGFloat(a) / 255
-        #if DEBUG
-        print("Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
-        #endif
+        debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 
@@ -24,9 +22,7 @@ public extension UIColor {
         let green = CGFloat(rgb >>  8 & 0xFF) / 0xFF
         let blue  = CGFloat(rgb       & 0xFF) / 0xFF
         let alpha = CGFloat(a               ) / 0xFF
-        #if DEBUG
-        print("Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
-        #endif
+        debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 }
