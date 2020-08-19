@@ -18,13 +18,17 @@ public extension LAContext {
         }
     }
 
-    func evaluatePolicy(_ policy: LAPolicy, localizedReason: String, reply: @escaping (Result<Any, Error>) -> Void) {
+    func evaluatePolicy(_ policy:        LAPolicy,
+                        localizedReason: String,
+                        on queue:        DispatchQueue = .main,
+                        with parameters: DispatchParametersMore = .defaults,
+                        reply:           @escaping (Result<Any, Error>) -> Void) {
         evaluatePolicy(policy, localizedReason: localizedReason) {
-            success, error in
+            (success: Bool, error: Error?) in
             if success {
-                reply(.success(true))
+                queue.async(with: parameters, execute: { reply(.success(true))   })
             } else {
-                reply(.failure(error!))
+                queue.async(with: parameters, execute: { reply(.failure(error!)) })
             }
         }
     }
