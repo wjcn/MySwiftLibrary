@@ -13,7 +13,7 @@ public extension UIColor {
         let green = CGFloat(g) / 255
         let blue  = CGFloat(b) / 255
         let alpha = CGFloat(a) / 255
-        debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
+//      debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 
@@ -22,7 +22,7 @@ public extension UIColor {
         let green = CGFloat(rgb >>  8 & 0xFF) / 0xFF
         let blue  = CGFloat(rgb       & 0xFF) / 0xFF
         let alpha = CGFloat(a               ) / 0xFF
-        debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
+//      debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Alpha: \(alpha)")
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 }
