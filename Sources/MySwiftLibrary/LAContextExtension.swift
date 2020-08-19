@@ -21,7 +21,7 @@ public extension LAContext {
     func evaluatePolicy(_ policy:        LAPolicy,
                         localizedReason: String,
                         on queue:        DispatchQueue = .main,
-                        with parameters: DispatchParametersMore = .defaults,
+                        with parameters: DispatchParameters3 = .defaults,
                         reply:           @escaping (Result<Any, Error>) -> Void) {
         evaluatePolicy(policy, localizedReason: localizedReason) {
             (success: Bool, error: Error?) in

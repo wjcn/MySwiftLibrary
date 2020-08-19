@@ -6,34 +6,36 @@
 
 import Foundation
 
-public protocol DispatchParametersBaseProtocol {
-    var qos:   DispatchQoS           { get set }
-    var flags: DispatchWorkItemFlags { get set }
-
-    static var `defaults`: Self { get }
-}
-
-public protocol DispatchParametersMoreProtocol: DispatchParametersBaseProtocol {
+private protocol DispatchParametersProtocol3: DispatchParametersProtocol2 {
     var group: DispatchGroup? { get set }
 }
 
-public struct DispatchParametersBase: DispatchParametersBaseProtocol {
-    public var qos:   DispatchQoS
-    public var flags: DispatchWorkItemFlags
-
-    public static var `defaults`: Self { Self(qos: .unspecified, flags: []) }
+private protocol DispatchParametersProtocol2 {
+    var qos:   DispatchQoS           { get set }
+    var flags: DispatchWorkItemFlags { get set }
 }
 
-public struct DispatchParametersMore: DispatchParametersMoreProtocol {
-    public var group: DispatchGroup?
-    public var qos:   DispatchQoS
-    public var flags: DispatchWorkItemFlags
+private protocol DispatchParametersProtocol {
+    static var `defaults`: Self { get }
+}
 
-    public static var `defaults`: Self { Self(group: nil, qos: .unspecified, flags: []) }
+public struct DispatchParameters3: DispatchParametersProtocol3, DispatchParametersProtocol {
+    public static var `defaults`: Self { Self() }
+
+    var group: DispatchGroup?
+    var qos:   DispatchQoS           = .unspecified
+    var flags: DispatchWorkItemFlags = []
+}
+
+public struct DispatchParameters2: DispatchParametersProtocol2, DispatchParametersProtocol {
+    var qos:   DispatchQoS           = .unspecified
+    var flags: DispatchWorkItemFlags = []
+
+    public static var `defaults`: Self { Self() }
 }
 
 public extension DispatchQueue {
-    func async(with parameters: DispatchParametersMore = .defaults,
+    func async(with parameters: DispatchParameters3 = .defaults,
                execute work:    @escaping () -> Void) {
         async(group:   parameters.group,
               qos:     parameters.qos,
@@ -42,7 +44,7 @@ public extension DispatchQueue {
     }
 
     func asyncAfter(deadline:        DispatchTime,
-                    with parameters: DispatchParametersBase = .defaults,
+                    with parameters: DispatchParameters2 = .defaults,
                     execute work:    @escaping () -> Void) {
         asyncAfter(deadline: deadline,
                    qos:      parameters.qos,
@@ -51,7 +53,7 @@ public extension DispatchQueue {
     }
 
     func asyncAfter(wallDeadline:    DispatchWallTime,
-                    with parameters: DispatchParametersBase = .defaults,
+                    with parameters: DispatchParameters2 = .defaults,
                     execute work:    @escaping () -> Void) {
         asyncAfter(wallDeadline: wallDeadline,
                    qos:          parameters.qos,
