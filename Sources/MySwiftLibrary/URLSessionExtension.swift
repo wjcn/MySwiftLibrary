@@ -51,7 +51,8 @@ extension URLSession {
         })
     }
 
-    @inlinable public func jsonTask<T>(with url: URL,
+    @inlinable public func jsonTask<T>(_ type: T.Type,
+                                       with url: URL,
                                        decoder: JSONDecoder = JSONDecoder(),
                                        queue: DispatchQueue = .main,
                                        with parameters: DispatchParameters3 = .defaults,
@@ -78,7 +79,8 @@ extension URLSession {
         })
     }
 
-    @inlinable public func jsonTask<T>(with request: URLRequest,
+    @inlinable public func jsonTask<T>(_ type: T.Type,
+                                       with request: URLRequest,
                                        decoder: JSONDecoder = JSONDecoder(),
                                        queue: DispatchQueue = .main,
                                        with parameters: DispatchParameters3 = .defaults,
