@@ -6,39 +6,61 @@
 
 import Foundation.NSArray
 
-public extension Array where Element: StringProtocol {
+extension Array where Element: StringProtocol {
+    @available(*, deprecated, renamed: "localizedJoined")
     @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
-    func localizedJoined() -> String {
-        ListFormatter.localizedString(byJoining: self.map { String($0) })
+    @inlinable public func localizedStringByJoining() -> String {
+        ListFormatter.localizedString(byJoining: self.map {
+            (element: Element) in
+            String(element)
+        })
     }
 }
 
-public extension Array {
-    var notEmpty: Bool { !isEmpty }
+extension Array {
+    @inlinable public var notEmpty: Bool { !isEmpty }
 
     // How to split an array into chunks.
     // https://www.hackingwithswift.com/example-code/language/how-to-split-an-array-into-chunks
 
-    func chunked(into size: Index) -> [[Element]] {
+    @inlinable public func chunked(into size: Index) -> [Array] {
         stride(from: startIndex, to: endIndex, by: size).map {
-            index in
-            Self(self[index ..< Swift.min(index + size, endIndex)])
+            (index: Index) in
+            Array(self[index ..< Swift.min(index + size, endIndex)])
         }
     }
 
-    static func + (leftSide: Self, rightSide: Element) -> Self {
-        var result = leftSide
-        result.append(rightSide)
+    @inlinable public static func + (array: Array, element: Element) -> Array {
+        var result = array
+        result.append(element)
         return result
     }
 
-    static func + (leftSide: Element, rightSide: Self) -> Self {
-        var result = Self(arrayLiteral: leftSide)
-        result.append(contentsOf: rightSide)
+    @inlinable public static func + (element: Element, array: Array) -> Array {
+        var result = Array(arrayLiteral: element)
+        result.append(contentsOf: array)
         return result
     }
 
-    static func += (leftSide: inout Self, rightSide: Element) {
-        leftSide.append(rightSide)
+    @inlinable public static func += (array: inout Array, element: Element) {
+        array.append(element)
+    }
+
+    @inlinable public mutating func sort<T>(by keyPath: KeyPath<Element, T>,
+                                            comparison areInIncreasingOrder: (_ leftSide:  T,
+                                                                              _ rightSide: T) throws -> Bool) rethrows {
+        try sort(by: {
+            (leftSide: Element, rightSide: Element) in
+            try areInIncreasingOrder(leftSide[keyPath: keyPath], rightSide[keyPath: keyPath])
+        })
+    }
+
+    @inlinable public func sorted<T>(by keyPath: KeyPath<Element, T>,
+                                     comparison areInIncreasingOrder: (_ leftSide:  T,
+                                                                       _ rightSide: T) throws -> Bool) rethrows -> Array {
+        try sorted(by: {
+            (leftSide: Element, rightSide: Element) in
+            try areInIncreasingOrder(leftSide[keyPath: keyPath], rightSide[keyPath: keyPath])
+        })
     }
 }

@@ -7,8 +7,8 @@
 #if !os(macOS)
 import UIKit.UIColor
 
-public extension UIColor {
-    convenience init(r: Int, g: Int, b: Int, a: Int = 255) {
+extension UIColor {
+    @inlinable public convenience init(r: Int, g: Int, b: Int, a: Int = 255) {
         let red   = CGFloat(r) / 255
         let green = CGFloat(g) / 255
         let blue  = CGFloat(b) / 255
@@ -17,7 +17,7 @@ public extension UIColor {
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 
-    convenience init(rgb: Int, a: Int = 0xFF) {
+    @inlinable public convenience init(rgb: Int, a: Int = 0xFF) {
         let red   = CGFloat(rgb >> 16 & 0xFF) / 0xFF
         let green = CGFloat(rgb >>  8 & 0xFF) / 0xFF
         let blue  = CGFloat(rgb       & 0xFF) / 0xFF

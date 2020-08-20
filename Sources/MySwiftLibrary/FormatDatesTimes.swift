@@ -4,11 +4,11 @@
 //  Created by William J. C. Nesbitt.
 //
 
-import Foundation.NSDate
+import Foundation.NSDateFormatter
 
-public extension Date {
-    func `as`(_ dateStyle: DateFormatter.Style = .none,
-                timeStyle: DateFormatter.Style = .none) -> String {
+extension Date {
+    @inlinable public func `as`(_ dateStyle: DateFormatter.Style = .none,
+                                  timeStyle: DateFormatter.Style = .none) -> String {
         DateFormatter.localizedString(from: self, dateStyle: dateStyle, timeStyle: timeStyle)
     }
 }

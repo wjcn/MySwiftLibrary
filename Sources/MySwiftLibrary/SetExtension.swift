@@ -6,6 +6,6 @@
 
 import Foundation.NSSet
 
-public extension Set {
-    var notEmpty: Bool { !isEmpty }
+extension Set {
+    @inlinable public var notEmpty: Bool { !isEmpty }
 }

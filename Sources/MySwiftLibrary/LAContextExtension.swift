@@ -8,8 +8,8 @@
 import LocalAuthentication.LAContext
 
 @available(tvOS 10, *)
-public extension LAContext {
-    func canEvaluatePolicy(_ policy: LAPolicy) -> Result<Any, Error> {
+extension LAContext {
+    @inlinable public func canEvaluatePolicy(_ policy: LAPolicy) -> Result<Any, Error> {
         var error: NSError?
         if canEvaluatePolicy(policy, error: &error) {
             return .success(true)
@@ -18,18 +18,22 @@ public extension LAContext {
         }
     }
 
-    func evaluatePolicy(_ policy:        LAPolicy,
-                        localizedReason: String,
-                        on queue:        DispatchQueue = .main,
-                        with parameters: DispatchParameters3 = .defaults,
-                        reply:           @escaping (Result<Any, Error>) -> Void) {
+    @inlinable public func evaluatePolicy(_ policy:        LAPolicy,
+                                          localizedReason: String,
+                                          queue:           DispatchQueue = .main,
+                                          with parameters: DispatchParameters3 = .defaults,
+                                          reply:           @escaping (Result<Any, Error>) -> Void) {
         evaluatePolicy(policy, localizedReason: localizedReason) {
             (success: Bool, error: Error?) in
-            if success {
-                queue.async(with: parameters, execute: { reply(.success(true))   })
-            } else {
-                queue.async(with: parameters, execute: { reply(.failure(error!)) })
+            if success == true, error == nil {
+                queue.async(with: parameters, execute: { reply(.success(true)) })
+                return
             }
+            if success == false, let error = error {
+                queue.async(with: parameters, execute: { reply(.failure(error)) })
+                return
+            }
+            fatalError() // This should not happen.
         }
     }
 }

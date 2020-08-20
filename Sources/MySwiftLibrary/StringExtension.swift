@@ -6,34 +6,54 @@
 
 import Foundation.NSString
 
-public extension String {
-    @inlinable var notEmpty: Bool { !isEmpty }
+@inlinable public func insensitiveCompareOrderedAscending<T>(_ leftSide: T,
+                                                             _ rightSide: T) -> Bool where T: StringProtocol {
+    leftSide.compare(rightSide,
+                     options: [.caseInsensitive,
+                               .diacriticInsensitive,
+                               .widthInsensitive]) == .orderedAscending
+}
 
-    static func + (leftSide: Self, rightSide: Element) -> Self {
+@inlinable public func insensitiveCompareOrderedDescending<T>(_ leftSide: T,
+                                                              _ rightSide: T) -> Bool where T: StringProtocol {
+    leftSide.compare(rightSide,
+                     options: [.caseInsensitive,
+                               .diacriticInsensitive,
+                               .widthInsensitive]) == .orderedDescending
+}
+
+extension String {
+    @inlinable public var notEmpty: Bool { !isEmpty }
+
+    @inlinable public static func + (leftSide: String, rightSide: Element) -> String {
         var result = leftSide
         result.append(rightSide)
         return result
     }
 
-    static func + (leftSide: Element, rightSide: Self) -> Self {
-        var result = Self(leftSide)
+    @inlinable public static func + (leftSide: Element, rightSide: String) -> String {
+        var result = String(leftSide)
         result.append(rightSide)
         return result
     }
 
-    static func += (leftSide: inout Self, rightSide: Element) {
+    @inlinable public static func += (leftSide: inout String, rightSide: Element) {
         leftSide.append(rightSide)
     }
 
-    func replacingOccurrences(using dictionary: [Self: Self]) -> Self {
+    @inlinable public func replacingOccurrences<Target,
+                                                Replacement>(dictionary: [Target: Replacement],
+                                                             options:     CompareOptions = [],
+                                                             range:       Range<Index>?  = nil) -> String where Target:      StringProtocol,
+                                                                                                                Replacement: StringProtocol {
         var result = self
-        for (key, value) in dictionary {
-            result = result.replacingOccurrences(of: key, with: value)
+        for (target, replacement) in dictionary {
+            result = result.replacingOccurrences(of: target, with: replacement, options: options, range: range)
         }
         return result
     }
 
-    mutating func trimCharacters(in characterSet: CharacterSet) {
+    @inlinable public mutating func trimCharacters(in characterSet: CharacterSet) {
         self = self.trimmingCharacters(in: characterSet)
     }
 }

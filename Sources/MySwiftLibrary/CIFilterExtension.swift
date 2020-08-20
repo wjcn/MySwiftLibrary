@@ -7,7 +7,7 @@
 #if !os(watchOS)
 import CoreImage.CIFilter
 
-public extension CIFilter {
-    var localisedName: String { Self.localizedName(forFilterName: name)! }
+extension CIFilter {
+    @inlinable public var localisedName: String { Self.localizedName(forFilterName: name)! }
 }
 #endif

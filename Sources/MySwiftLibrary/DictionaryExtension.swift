@@ -6,6 +6,6 @@
 
 import Foundation.NSDictionary
 
-public extension Dictionary {
-    var notEmpty: Bool { !isEmpty }
+extension Dictionary {
+    @inlinable public var notEmpty: Bool { !isEmpty }
 }
