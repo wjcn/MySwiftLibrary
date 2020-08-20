@@ -6,7 +6,7 @@
 
 import Foundation.NSString
 
-@inlinable public func insensitiveCompareOrderedAscending<T>(_ leftSide: T,
+@inlinable public func insensitiveCompareOrderedAscending<T>(_ leftSide:  T,
                                                              _ rightSide: T) -> Bool where T: StringProtocol {
     leftSide.compare(rightSide,
                      options: [.caseInsensitive,
@@ -14,7 +14,7 @@ import Foundation.NSString
                                .widthInsensitive]) == .orderedAscending
 }
 
-@inlinable public func insensitiveCompareOrderedDescending<T>(_ leftSide: T,
+@inlinable public func insensitiveCompareOrderedDescending<T>(_ leftSide:  T,
                                                               _ rightSide: T) -> Bool where T: StringProtocol {
     leftSide.compare(rightSide,
                      options: [.caseInsensitive,
