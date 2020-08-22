@@ -11,26 +11,37 @@ import LocalAuthentication.LAContext
 extension LAContext {
     @inlinable public func canEvaluatePolicy(_ policy: LAPolicy) -> Result<Any, Error> {
         var error: NSError?
-        if canEvaluatePolicy(policy, error: &error) {
+        let success = canEvaluatePolicy(policy, error: &error)
+        if success == true, error == nil {
             return .success(true)
-        } else {
-            return .failure(error!)
         }
+        if success == false, let error = error {
+            return .failure(error)
+        }
+        fatalError() // This should not happen.
     }
 
-    @inlinable public func evaluatePolicy(_ policy:        LAPolicy,
-                                          localizedReason: String,
-                                          queue:           DispatchQueue = .main,
-                                          with parameters: DispatchParameters3 = .defaults,
-                                          reply:           @escaping (Result<Any, Error>) -> Void) {
+    @inlinable public func evaluatePolicy(
+        _ policy:         LAPolicy,
+        localizedReason:  String,
+        queue:            DispatchQueue         = .main,
+        group:            DispatchGroup?        = nil,
+        qos:              DispatchQoS           = .unspecified,
+        flags:            DispatchWorkItemFlags = [],
+        reply: @escaping (Result<Any, Error>) -> Void
+    ) {
         evaluatePolicy(policy, localizedReason: localizedReason) {
             (success: Bool, error: Error?) in
             if success == true, error == nil {
-                queue.async(with: parameters, execute: { reply(.success(true)) })
+                queue.async(group: group, qos: qos, flags: flags, execute: {
+                    reply(.success(true))
+                })
                 return
             }
             if success == false, let error = error {
-                queue.async(with: parameters, execute: { reply(.failure(error)) })
+                queue.async(group: group, qos: qos, flags: flags, execute: {
+                    reply(.failure(error))
+                })
                 return
             }
             fatalError() // This should not happen.

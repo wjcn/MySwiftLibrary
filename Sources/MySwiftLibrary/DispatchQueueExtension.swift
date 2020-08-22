@@ -6,6 +6,7 @@
 
 import Dispatch
 
+@available(*, deprecated)
 extension DispatchQueue {
     @inlinable public func async(with parameters: DispatchParameters3 = .defaults,
                                  execute closure: @escaping () -> Void) {

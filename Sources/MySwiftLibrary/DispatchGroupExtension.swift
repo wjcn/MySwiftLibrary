@@ -6,6 +6,7 @@
 
 import Dispatch
 
+@available(*, deprecated)
 extension DispatchGroup {
     @inlinable public func notify(queue:           DispatchQueue = .main,
                                   with parameters: DispatchParameters2 = .defaults,

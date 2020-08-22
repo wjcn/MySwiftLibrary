@@ -6,19 +6,23 @@
 
 import Dispatch
 
+@available(*, deprecated)
 private protocol DispatchParametersProtocol3: DispatchParametersProtocol2 {
     var group: DispatchGroup? { get set }
 }
 
+@available(*, deprecated)
 private protocol DispatchParametersProtocol2 {
     var qos:   DispatchQoS           { get set }
     var flags: DispatchWorkItemFlags { get set }
 }
 
+@available(*, deprecated)
 private protocol DispatchParametersProtocol {
     static var `defaults`: Self { get }
 }
 
+@available(*, deprecated)
 public struct DispatchParameters3: DispatchParametersProtocol3,
                                    DispatchParametersProtocol {
     public var group: DispatchGroup?
@@ -36,6 +40,7 @@ public struct DispatchParameters3: DispatchParametersProtocol3,
     }
 }
 
+@available(*, deprecated)
 public struct DispatchParameters2: DispatchParametersProtocol2,
                                    DispatchParametersProtocol {
     public init(qos:   DispatchQoS           = .unspecified,
