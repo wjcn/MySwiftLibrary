@@ -82,7 +82,13 @@ extension Array {
     @inlinable public mutating func sort<T>(
         by keyPath: KeyPath<Element, T>,
         _ ordered:  ComparisonResult,
-        _ options:  String.CompareOptions = [],
+        _ options:  String.CompareOptions = [
+            .caseInsensitive,
+            .diacriticInsensitive,
+            .forcedOrdering,
+            .numeric,
+            .widthInsensitive
+        ],
         range:      Range<String.Index>?  = nil,
         locale:     Locale?               = nil,
         comparison: (
@@ -106,7 +112,13 @@ extension Array {
     @inlinable public func sorted<T>(
         by keyPath: KeyPath<Element, T>,
         _ ordered:  ComparisonResult,
-        _ options:  String.CompareOptions = [],
+        _ options:  String.CompareOptions = [
+            .caseInsensitive,
+            .diacriticInsensitive,
+            .forcedOrdering,
+            .numeric,
+            .widthInsensitive
+        ],
         range:      Range<String.Index>?  = nil,
         locale:     Locale?               = nil,
         comparison: (
