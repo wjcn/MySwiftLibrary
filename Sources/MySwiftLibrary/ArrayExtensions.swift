@@ -97,7 +97,7 @@ extension Array {
             _ options:   String.CompareOptions,
             _ range:     Range<String.Index>?,
             _ locale:    Locale?
-        ) throws -> ComparisonResult
+        ) throws -> ComparisonResult = compare
     ) rethrows where T: StringProtocol {
         try sort(by: {
             (leftSide: Element, rightSide: Element) in
@@ -127,7 +127,7 @@ extension Array {
             _ options:   String.CompareOptions,
             _ range:     Range<String.Index>?,
             _ locale:    Locale?
-        ) throws -> ComparisonResult
+        ) throws -> ComparisonResult = compare
     ) rethrows -> Array where T: StringProtocol {
         try sorted(by: {
             (leftSide: Element, rightSide: Element) in
@@ -137,5 +137,18 @@ extension Array {
                 options, range, locale
             ) == ordered
         })
+    }
+
+    @inlinable public static func compare<T>(
+        _ leftSide:  T,
+        _ rightSide: T,
+        _ options:   String.CompareOptions,
+        _ range:     Range<String.Index>?,
+        _ locale:    Locale?
+    ) -> ComparisonResult where T: StringProtocol {
+        leftSide.compare(rightSide,
+                         options: options,
+                         range:   range,
+                         locale:  locale)
     }
 }

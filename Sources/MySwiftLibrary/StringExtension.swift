@@ -6,19 +6,6 @@
 
 import Foundation.NSString
 
-@inlinable public func compare<T>(
-    _ leftSide:  T,
-    _ rightSide: T,
-    _ options:   String.CompareOptions,
-    _ range:     Range<String.Index>?,
-    _ locale:    Locale?
-) -> ComparisonResult where T: StringProtocol {
-    leftSide.compare(rightSide,
-                     options: options,
-                     range:   range,
-                     locale:  locale)
-}
-
 @available(*, deprecated)
 @inlinable public func insensitiveCompareOrderedAscending<T>(
     _ leftSide:  T,
