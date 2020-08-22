@@ -38,7 +38,12 @@ extension Array {
         array.append(element)
     }
 
-    @available(*, deprecated, renamed: "localizedJoined")
+    @available(*, deprecated, renamed: "localizedStringByJoining")
+    @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
+    @inlinable public func localizedJoined() -> String where Element: StringProtocol {
+        localizedStringByJoining()
+    }
+
     @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
     @inlinable public func localizedStringByJoining() -> String where Element: StringProtocol {
         ListFormatter.localizedString(byJoining: self.map {
