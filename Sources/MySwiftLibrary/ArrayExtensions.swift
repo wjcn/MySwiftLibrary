@@ -81,14 +81,8 @@ extension Array {
 
     @inlinable public mutating func sort<T>(
         by keyPath: KeyPath<Element, T>,
-        _ ordered:  ComparisonResult,
-        _ options:  String.CompareOptions = [
-            .caseInsensitive,
-            .diacriticInsensitive,
-            .forcedOrdering,
-            .numeric,
-            .widthInsensitive
-        ],
+        ordered:    ComparisonResult      = .orderedAscending,
+        options:    String.CompareOptions = [],
         range:      Range<String.Index>?  = nil,
         locale:     Locale?               = nil,
         comparison: (
@@ -97,11 +91,11 @@ extension Array {
             _ options:   String.CompareOptions,
             _ range:     Range<String.Index>?,
             _ locale:    Locale?
-        ) throws -> ComparisonResult = compare
-    ) rethrows where T: StringProtocol {
-        try sort(by: {
+        ) -> ComparisonResult = compare
+    ) where T: StringProtocol {
+        sort(by: {
             (leftSide: Element, rightSide: Element) in
-            try comparison(
+            comparison(
                 leftSide [keyPath: keyPath],
                 rightSide[keyPath: keyPath],
                 options, range, locale
@@ -111,14 +105,8 @@ extension Array {
 
     @inlinable public func sorted<T>(
         by keyPath: KeyPath<Element, T>,
-        _ ordered:  ComparisonResult,
-        _ options:  String.CompareOptions = [
-            .caseInsensitive,
-            .diacriticInsensitive,
-            .forcedOrdering,
-            .numeric,
-            .widthInsensitive
-        ],
+        ordered:    ComparisonResult      = .orderedAscending,
+        options:    String.CompareOptions = [],
         range:      Range<String.Index>?  = nil,
         locale:     Locale?               = nil,
         comparison: (
@@ -127,28 +115,28 @@ extension Array {
             _ options:   String.CompareOptions,
             _ range:     Range<String.Index>?,
             _ locale:    Locale?
-        ) throws -> ComparisonResult = compare
-    ) rethrows -> Array where T: StringProtocol {
-        try sorted(by: {
+        ) -> ComparisonResult = compare
+    ) -> Array where T: StringProtocol {
+        sorted(by: {
             (leftSide: Element, rightSide: Element) in
-            try comparison(
+            comparison(
                 leftSide [keyPath: keyPath],
                 rightSide[keyPath: keyPath],
                 options, range, locale
             ) == ordered
         })
     }
-}
 
-@inlinable public func compare<T>(
-    _ leftSide:  T,
-    _ rightSide: T,
-    _ options:   String.CompareOptions,
-    _ range:     Range<String.Index>?,
-    _ locale:    Locale?
-) -> ComparisonResult where T: StringProtocol {
-    leftSide.compare(rightSide,
-                     options: options,
-                     range:   range,
-                     locale:  locale)
+    @inlinable public static func compare<T>(
+        _ leftSide:  T,
+        _ rightSide: T,
+        _ options:   String.CompareOptions,
+        _ range:     Range<String.Index>?,
+        _ locale:    Locale?
+    ) -> ComparisonResult where T: StringProtocol {
+        leftSide.compare(rightSide,
+                         options: options,
+                         range:   range,
+                         locale:  locale)
+    }
 }
