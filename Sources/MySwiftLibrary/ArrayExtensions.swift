@@ -6,17 +6,6 @@
 
 import Foundation.NSArray
 
-extension Array where Element: StringProtocol {
-    @available(*, deprecated, renamed: "localizedJoined")
-    @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
-    @inlinable public func localizedStringByJoining() -> String {
-        ListFormatter.localizedString(byJoining: self.map {
-            (element: Element) in
-            String(element)
-        })
-    }
-}
-
 extension Array {
     @inlinable public var notEmpty: Bool { !isEmpty }
 
@@ -30,37 +19,111 @@ extension Array {
         }
     }
 
-    @inlinable public static func + (array: Array, element: Element) -> Array {
+    @inlinable public static func + (array:   Array,
+                                     element: Element) -> Array {
         var result = array
         result.append(element)
         return result
     }
 
-    @inlinable public static func + (element: Element, array: Array) -> Array {
+    @inlinable public static func + (element: Element,
+                                     array: Array) -> Array {
         var result = Array(arrayLiteral: element)
         result.append(contentsOf: array)
         return result
     }
 
-    @inlinable public static func += (array: inout Array, element: Element) {
+    @inlinable public static func += (array: inout Array,
+                                      element: Element) {
         array.append(element)
     }
 
-    @inlinable public mutating func sort<T>(by keyPath: KeyPath<Element, T>,
-                                            comparison areInIncreasingOrder: (_ leftSide:  T,
-                                                                              _ rightSide: T) throws -> Bool) rethrows {
-        try sort(by: {
-            (leftSide: Element, rightSide: Element) in
-            try areInIncreasingOrder(leftSide[keyPath: keyPath], rightSide[keyPath: keyPath])
+    @available(*, deprecated, renamed: "localizedJoined")
+    @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
+    @inlinable public func localizedStringByJoining() -> String where Element: StringProtocol {
+        ListFormatter.localizedString(byJoining: self.map {
+            (element: Element) in
+            String(element)
         })
     }
 
-    @inlinable public func sorted<T>(by keyPath: KeyPath<Element, T>,
-                                     comparison areInIncreasingOrder: (_ leftSide:  T,
-                                                                       _ rightSide: T) throws -> Bool) rethrows -> Array {
+    @inlinable public mutating func sort<T>(
+        by keyPath: KeyPath<Element, T>,
+        comparison areInIncreasingOrder: (
+            _ leftSide:  T,
+            _ rightSide: T
+        ) throws -> Bool
+    ) rethrows {
+        try sort(by: {
+            (leftSide: Element, rightSide: Element) in
+            try areInIncreasingOrder(
+                leftSide [keyPath: keyPath],
+                rightSide[keyPath: keyPath]
+            )
+        })
+    }
+
+    @inlinable public func sorted<T>(
+        by keyPath: KeyPath<Element, T>,
+        comparison areInIncreasingOrder: (
+            _ leftSide:  T,
+            _ rightSide: T
+        ) throws -> Bool
+    ) rethrows -> Array {
         try sorted(by: {
             (leftSide: Element, rightSide: Element) in
-            try areInIncreasingOrder(leftSide[keyPath: keyPath], rightSide[keyPath: keyPath])
+            try areInIncreasingOrder(
+                leftSide [keyPath: keyPath],
+                rightSide[keyPath: keyPath]
+            )
+        })
+    }
+
+    @inlinable public mutating func sort<T>(
+        by keyPath: KeyPath<Element, T>,
+        _ ordered:  ComparisonResult,
+        _ options:  String.CompareOptions = [],
+        range:      Range<String.Index>?  = nil,
+        locale:     Locale?               = nil,
+        comparison: (
+            _ leftSide:  T,
+            _ rightSide: T,
+            _ options:   String.CompareOptions,
+            _ range:     Range<String.Index>?,
+            _ locale:    Locale?
+        ) throws -> ComparisonResult
+    ) rethrows where T: StringProtocol {
+        try sort(by: {
+            (leftSide: Element, rightSide: Element) in
+            try comparison(
+                leftSide [keyPath: keyPath],
+                rightSide[keyPath: keyPath],
+                options, range, locale
+            ) == ordered
+        })
+    }
+
+    @inlinable public func sorted<T>(
+        by keyPath: KeyPath<Element, T>,
+        _ ordered:  ComparisonResult,
+        _ options:  String.CompareOptions = [],
+        range:      Range<String.Index>?  = nil,
+        locale:     Locale?               = nil,
+        comparison: (
+            _ leftSide:  T,
+            _ rightSide: T,
+            _ options:   String.CompareOptions,
+            _ range:     Range<String.Index>?,
+            _ locale:    Locale?
+        ) throws -> ComparisonResult
+    ) rethrows -> Array where T: StringProtocol {
+        try sorted(by: {
+            (leftSide: Element, rightSide: Element) in
+            try comparison(
+                leftSide [keyPath: keyPath],
+                rightSide[keyPath: keyPath],
+                options, range, locale
+            ) == ordered
         })
     }
 }
