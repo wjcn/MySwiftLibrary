@@ -2,6 +2,7 @@
 //  MKLocalSearchExtension.swift
 //
 //  Created by William J. C. Nesbitt.
+//  Copyright © 2020 William J. C. Nesbitt. All rights reserved.
 //
 
 #if !os(watchOS)
@@ -13,7 +14,7 @@ extension MKLocalSearch {
     // the main queue even though the documentation says otherwise.
     @inlinable public func start(
         queue: DispatchQueue         = .main,
-        group: DispatchGroup?        = nil,
+        group: DispatchGroup?        =  nil,
         qos:   DispatchQoS           = .unspecified,
         flags: DispatchWorkItemFlags = [],
         completionHandler: @escaping (Result<Response, Error>) -> Void
@@ -21,18 +22,20 @@ extension MKLocalSearch {
         start(completionHandler: {
             (response: Response?, error: Error?) in
             if let response = response, error == nil {
-                queue.async(group: group, qos: qos, flags: flags, execute: {
-                    completionHandler(.success(response))
-                })
-                return
+                queue.async(
+                    group: group, qos: qos, flags: flags,
+                    execute: {
+                        completionHandler(.success(response))
+                    })
+            } else if response == nil, let error = error {
+                queue.async(
+                    group: group, qos: qos, flags: flags,
+                    execute: {
+                        completionHandler(.failure(error))
+                    })
+            } else {
+                fatalError() // This should not happen.
             }
-            if response == nil, let error = error {
-                queue.async(group: group, qos: qos, flags: flags, execute: {
-                    completionHandler(.failure(error))
-                })
-                return
-            }
-            fatalError() // This should not happen.
         })
     }
 }

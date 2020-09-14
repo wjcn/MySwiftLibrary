@@ -2,6 +2,7 @@
 //  ColorExtension.swift
 //
 //  Created by William J. C. Nesbitt.
+//  Copyright © 2020 William J. C. Nesbitt. All rights reserved.
 //
 
 import SwiftUI
@@ -13,7 +14,7 @@ extension Color {
         let green   = Double(g) / 255
         let blue    = Double(b) / 255
         let opacity = Double(o) / 255
-        //      debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Opacity: \(opacity)")
+//      debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Opacity: \(opacity)")
         self.init(colorSpace, red: red, green: green, blue: blue, opacity: opacity)
     }
 
@@ -22,7 +23,7 @@ extension Color {
         let green   = Double(rgb >>  8 & 0xFF) / 0xFF
         let blue    = Double(rgb       & 0xFF) / 0xFF
         let opacity = Double(o               ) / 0xFF
-        //      debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Opacity: \(opacity)")
+//      debugPrint("Red: \(red), Green: \(green), Blue: \(blue), Opacity: \(opacity)")
         self.init(colorSpace, red: red, green: green, blue: blue, opacity: opacity)
     }
 }

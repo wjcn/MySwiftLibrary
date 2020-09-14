@@ -2,6 +2,7 @@
 //  DispatchQueueExtension.swift
 //
 //  Created by William J. C. Nesbitt on 8/18/20.
+//  Copyright © 2020 William J. C. Nesbitt. All rights reserved.
 //
 
 import Dispatch
