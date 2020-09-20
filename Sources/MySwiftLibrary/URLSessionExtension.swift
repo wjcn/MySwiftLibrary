@@ -57,20 +57,21 @@ extension URLSession {
         flags:    DispatchWorkItemFlags,
         completionHandler: @escaping (Result<(Data, URLResponse?), Error>) -> Void
     ) {
-        if let data = data, error == nil {
-            queue.async(
-                group: group, qos: qos, flags: flags,
-                execute: {
-                    completionHandler(.success((data, response)))
-                })
-        } else if data == nil, let error = error {
-            queue.async(
-                group: group, qos: qos, flags: flags,
-                execute: {
-                    completionHandler(.failure(error))
-                })
-        } else {
-            fatalError() // This should not happen.
+        switch (data, error) {
+            case (let .some(data), .none):
+                queue.async(
+                    group: group, qos: qos, flags: flags,
+                    execute: {
+                        completionHandler(.success((data, response)))
+                    })
+            case (.none, let .some(error)):
+                queue.async(
+                    group: group, qos: qos, flags: flags,
+                    execute: {
+                        completionHandler(.failure(error))
+                    })
+            default:
+                fatalError() // This should not happen.
         }
     }
 

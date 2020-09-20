@@ -13,12 +13,13 @@ extension LAContext {
     @inlinable public func canEvaluatePolicy(_ policy: LAPolicy) -> Result<Any, Error> {
         var error: NSError?
         let success = canEvaluatePolicy(policy, error: &error)
-        if success == true, error == nil {
-            return .success(true)
-        } else if success == false, let error = error {
-            return .failure(error)
-        } else {
-            fatalError() // This should not happen.
+        switch (success, error) {
+            case (true, .none):
+                return .success(true)
+            case (false, let .some(error)):
+                return .failure(error)
+            default:
+                fatalError() // This should not happen.
         }
     }
 
@@ -33,16 +34,17 @@ extension LAContext {
     ) {
         evaluatePolicy(policy, localizedReason: localizedReason) {
             (success: Bool, error: Error?) in
-            if success == true, error == nil {
-                queue.async(group: group, qos: qos, flags: flags, execute: {
-                    reply(.success(true))
-                })
-            } else if success == false, let error = error {
-                queue.async(group: group, qos: qos, flags: flags, execute: {
-                    reply(.failure(error))
-                })
-            } else {
-                fatalError() // This should not happen.
+            switch (success, error) {
+                case (true, .none):
+                    queue.async(group: group, qos: qos, flags: flags, execute: {
+                        reply(.success(true))
+                    })
+                case (false, let .some(error)):
+                    queue.async(group: group, qos: qos, flags: flags, execute: {
+                        reply(.failure(error))
+                    })
+                default:
+                    fatalError() // This should not happen.
             }
         }
     }

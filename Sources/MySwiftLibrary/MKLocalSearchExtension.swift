@@ -21,20 +21,21 @@ extension MKLocalSearch {
     ) {
         start(completionHandler: {
             (response: Response?, error: Error?) in
-            if let response = response, error == nil {
-                queue.async(
-                    group: group, qos: qos, flags: flags,
-                    execute: {
-                        completionHandler(.success(response))
-                    })
-            } else if response == nil, let error = error {
-                queue.async(
-                    group: group, qos: qos, flags: flags,
-                    execute: {
-                        completionHandler(.failure(error))
-                    })
-            } else {
-                fatalError() // This should not happen.
+            switch (response, error) {
+                case (let .some(response), .none):
+                    queue.async(
+                        group: group, qos: qos, flags: flags,
+                        execute: {
+                            completionHandler(.success(response))
+                        })
+                case (.none, let .some(error)):
+                    queue.async(
+                        group: group, qos: qos, flags: flags,
+                        execute: {
+                            completionHandler(.failure(error))
+                        })
+                default:
+                    fatalError() // This should not happen.
             }
         })
     }
